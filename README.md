@@ -6,7 +6,7 @@ How to run:
 
 open project in terminal:
 
-docker build -t vrp_bono_image -f docker/Dockerfile  .
-docker ps -a
-docker image
- docker run -it --name vrp_bono_container vrp_bono_image
+1. docker build -t vrp_bono_image -f docker/Dockerfile  .
+2. docker ps -a
+3. docker image
+4. docker run -it --name vrp_bono_container vrp_bono_image
