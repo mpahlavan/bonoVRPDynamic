@@ -18,8 +18,7 @@ This will open the container, allowing you to run the code directly inside it.
 
 To run the training phase, use the following command:
 
-bash
-Copy code
+```
 python script/train.py
-Save to grepper
+```
 Now, you're set to execute the code seamlessly within the Docker container.
