@@ -12,14 +12,14 @@ docker ps -a
 docker image
 docker run -it --name vrp_bono_container vrp_bono_image
 ```
-In VSCode, press Ctrl+Shift+P, then select Dev container: Attach to Running Container... and choose /vrp_bono_container.
 
-This will open the container, allowing you to run the code directly inside it.
+1. In VSCode, press **Ctrl+Shift+P**, then select **Dev container: Attach to Running Container...** and choose **/vrp_bono_container**
+
+2. This will open the container, allowing you to run the code directly inside it.
 
 To run the training phase, use the following command:
-
-bash
-Copy code
+```
 python script/train.py
-Save to grepper
+```
+
 Now, you're set to execute the code seamlessly within the Docker container.

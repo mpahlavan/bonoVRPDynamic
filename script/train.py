@@ -261,4 +261,7 @@ def main(args):
 
 
 if __name__ == "__main__":
+    
+    start_time = time.time()
     main(parse_args())
+    print("--- %s seconds ---" % (time.time() - start_time))

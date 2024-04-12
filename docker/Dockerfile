@@ -1,7 +1,7 @@
 #FROM nvidia/cuda:9.1-cudnn7-devel-ubuntu16.04
 FROM jarvice/app-cuda-9.1:9.1-cudnn7-devel-ubuntu16.04
+#FROM juliojj/cuda9-cudnn7-p3-tf1.12
 
-#FROM nvidia/cuda:9.1-cudnn7-devel-ubuntu16.04
 #FROM nvidia/cuda:9.1-cudnn7-runtime-ubuntu16.04
 
 RUN apt-get update && \
@@ -10,6 +10,7 @@ RUN apt-get update && \
 		curl && \
 	rm -rf /var/lib/apt/lists/*
 
+
 RUN curl https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -o miniconda.sh && \
 	chmod +x miniconda.sh && \
 	./miniconda.sh -u -b -p /opt/conda && \
@@ -17,6 +18,8 @@ RUN curl https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -
 	/opt/conda/bin/conda install -y pytorch torchvision cudatoolkit=9.0 tqdm matplotlib scipy -c pytorch && \
 	/opt/conda/bin/conda clean -ya
 ENV PATH /opt/conda/bin:$PATH
+
+#RUN apt-get install nvidia-384 nvidia-modprobe
 
 RUN curl http://akira.ruc.dk/~keld/research/LKH-3/LKH-3.0.5.tgz -o LKH-3.0.5.tar.gz && \
 	tar zxf LKH-3.0.5.tar.gz && \
