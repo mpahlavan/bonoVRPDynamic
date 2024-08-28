@@ -21,5 +21,4 @@ To run the training phase, use the following command:
 ```
 python script/train.py
 ```
-
 Now, you're set to execute the code seamlessly within the Docker container.

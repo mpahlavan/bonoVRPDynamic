@@ -23,6 +23,11 @@ class SDVRPTW_Dataset(VRPTW_Dataset):
             ):
         size = (batch_size, cust_count, 1)
 
+        #Sampling a is_dyn mask to determine which customers are dynamic
+        #Sample is_dyn_e mask to divide dynamics into early/late
+        #Sample appearance times aprs for dynamic customers
+        #Ready times rdys use appearance times as lower bounds
+
         # Sample locs        x_j, y_j ~ U(0, 100)
         locs = torch.randint(*cust_loc_range, (batch_size, cust_count+1, 2), dtype = torch.float)
         # Sample dems             q_j ~ U(5,  40)
@@ -30,15 +35,28 @@ class SDVRPTW_Dataset(VRPTW_Dataset):
         # Sample serv. time       s_j ~ U(10, 30)
         durs = torch.randint(*cust_dur_range, size, dtype = torch.float)
 
+        
+        #In summary:
+        #Case 1: Fixed ratio for all batches,
+        #Case 2: Fixed ratio (sampling from list with 1 value)
+        #Case 3: Different ratio per batch
+        
+        
         # Sample dyn subset           ~ B(dod)
-        # and early/late appearance   ~ B(d_early_ratio)
+        # dod: Probability of a customer being dynamically inserted.
+        #If dod is a single float, it directly specifies the probability of dynamic insertion. In this case, is_dyn is created as a Bernoulli tensor with the specified probability using torch.empty(size).bernoulli_().
         if isinstance(dod, float):
             is_dyn = torch.empty(size).bernoulli_(dod)
+        # If dod is not a float, the code checks if it's a single-element list or tuple.it means that every customer has the same probability, but it's specified as a single element in the list or tuple.
         elif len(dod) == 1:
             is_dyn = torch.empty(size).bernoulli_(dod[0])
+        # If dod is neither a float nor a single-element list/tuple, it is assumed to be a tuple of floats, indicating a range of probabilities for each customer.
         else: # tuple of float
             ratio = torch.tensor(dod)[torch.randint(0, len(dod), (batch_size,), dtype = torch.int64)]
             is_dyn = ratio[:,None,None].expand(*size).bernoulli()
+
+        # and early/late appearance   ~ B(d_early_ratio)
+        # d_early_ratio: Probability of a dynamically inserted customer appearing early.
 
         if isinstance(d_early_ratio, float):
             is_dyn_e = torch.empty(size).bernoulli_(d_early_ratio)
@@ -64,6 +82,7 @@ class SDVRPTW_Dataset(VRPTW_Dataset):
         else: # tuple of float
             ratio = torch.tensor(tw_ratio)[torch.randint(0, len(tw_ratio), (batch_size,), dtype = torch.int64)]
             has_tw = ratio[:,None,None].expand(*size).bernoulli()
+            #NOTE in this problem has-tw=1, for future update of the case outpatient consider using the "has_tw".
 
         # Sample TW width        tw_j = H if not in TW subset
         #                        tw_j ~ U(30,90) if in TW subset
