@@ -18,8 +18,8 @@ docker run -it --name vrp_bono_container vrp_bono_image
 2. This will open the container, allowing you to run the code directly inside it.
 
 To run the training phase, use the following command:
+
 ```
 python script/train.py
 ```
-
 Now, you're set to execute the code seamlessly within the Docker container.
